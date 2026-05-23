@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard - Oxford Portal</title>
+    <style>
+        body { font-family: Arial; background: #f0f2f5; margin: 0; padding: 20px; }
+        .container { max-width: 1400px; margin: auto; background: white; padding: 20px; border-radius: 8px; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #1e3c72; color: white; position: sticky; top: 0; }
+        .btn { display: inline-block; padding: 5px 10px; margin: 2px; text-decoration: none; border-radius: 4px; }
+        .btn-add { background: green; color: white; }
+        .btn-edit { background: blue; color: white; }
+        .logout { float: right; background: gray; color: white; padding: 5px 10px; text-decoration: none; border-radius: 4px; }
+        .flash-success { color: green; }
+        .flash-error { color: red; }
+        .search-form { margin: 20px 0; display: flex; gap: 10px; }
+        .search-input { flex: 1; padding: 8px; font-size: 16px; }
+        .search-btn { padding: 8px 16px; background: #1e3c72; color: white; border: none; cursor: pointer; }
+        .clear-btn { background: gray; color: white; padding: 8px 16px; text-decoration: none; display: inline-block; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Admin Dashboard <a href="{{ url_for('admin_logout') }}" class="logout">Logout</a></h2>
+        <a href="{{ url_for('admin_add') }}" class="btn btn-add">+ Add New Student</a>
+
+        <!-- Search Form -->
+        <form method="get" action="{{ url_for('admin_dashboard') }}" class="search-form">
+            <input type="text" name="search" placeholder="Search by Register Number or Name..." value="{{ search_query }}" class="search-input">
+            <button type="submit" class="search-btn">Search</button>
+            {% if search_query %}
+                <a href="{{ url_for('admin_dashboard') }}" class="clear-btn">Clear</a>
+            {% endif %}
+        </form>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endwith %}
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Register Number</th>
+                    <th>Full Name</th>
+                    <th>Course</th>
+                    <th>Duration</th>
+                    <th>Center</th>
+                    <th>Date of Issue</th>
+                    <th>Grade</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td>{{ student[0] }}</td>
+                    <td>{{ student[1] }}</td>
+                    <td>{{ student[2] }}</td>
+                    <td>{{ student[3] }}</td>
+                    <td>{{ student[4] }}</td>
+                    <td>{{ student[5].strftime('%Y-%m-%d') if student[5] else 'N/A' }}</td>
+                    <td>{{ student[6] }}</td>
+                    <td>
+                        <a href="{{ url_for('admin_edit', register_number=student[0]) }}" class="btn btn-edit">Edit</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="8">No students found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Student | Oxford Admin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card {
+            max-width: 700px;
+            width: 100%;
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 1.75rem 2rem;
+            color: white;
+        }
+
+        .card-header h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin-bottom: 0.25rem;
+        }
+
+        .card-header p {
+            opacity: 0.85;
+            font-size: 0.9rem;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+            font-size: 0.875rem;
+            letter-spacing: 0.3px;
+        }
+
+        .required:after {
+            content: " *";
+            color: #ef4444;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            background: #f8fafc;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            color: #0f172a;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            background: white;
+        }
+
+        input[readonly] {
+            background: #f1f5f9;
+            color: #64748b;
+            cursor: not-allowed;
+            border-color: #e2e8f0;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        hr {
+            margin: 1.5rem 0;
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, #e2e8f0, transparent);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #334155;
+            border: 1px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+            transform: translateY(-1px);
+        }
+
+        .flash-message {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            border-radius: 20px;
+            background: #fee2e2;
+            color: #991b1b;
+            font-size: 0.875rem;
+            border-left: 4px solid #ef4444;
+        }
+
+        .flash-success {
+            background: #dcfce7;
+            color: #166534;
+            border-left-color: #22c55e;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 1rem;
+            }
+            .card-body {
+                padding: 1.5rem;
+            }
+            .button-group {
+                flex-direction: column;
+            }
+            .btn {
+                width: 100%;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card {
+            animation: fadeIn 0.4s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">
+            <h2>✏️ Edit Student</h2>
+            <p>Update the student's details. Register number cannot be changed.</p>
+        </div>
+        <div class="card-body">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% for category, message in messages %}
+                    <div class="flash-message {% if category == 'success' %}flash-success{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endwith %}
+
+            <form method="post">
+                <div class="form-group">
+                    <label class="required">Register Number</label>
+                    <input type="text" name="register_number" value="{{ student.register_number }}" readonly>
+                    <small style="color: #64748b; font-size: 0.7rem;">Register number cannot be changed.</small>
+                </div>
+
+                <div class="form-group">
+                    <label class="required">Full Name</label>
+                    <input type="text" name="full_name" value="{{ student.full_name }}" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Course</label>
+                        <input type="text" name="course" value="{{ student.course }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Duration</label>
+                        <input type="text" name="duration" value="{{ student.duration }}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Center</label>
+                    <input type="text" name="center" value="{{ student.center }}">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date of Issue</label>
+                        <input type="date" name="date_of_issue" value="{{ student.date_of_issue }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Grade</label>
+                        <select name="grade">
+                            <option value="">Select Grade</option>
+                            <option value="A+ GRADE" {% if student.grade == 'A+ GRADE' %}selected{% endif %}>A+ GRADE</option>
+                            <option value="A GRADE" {% if student.grade == 'A GRADE' %}selected{% endif %}>A GRADE</option>
+                            <option value="B+ GRADE" {% if student.grade == 'B+ GRADE' %}selected{% endif %}>B+ GRADE</option>
+                            <option value="B GRADE" {% if student.grade == 'B GRADE' %}selected{% endif %}>B GRADE</option>
+                            <option value="C GRADE" {% if student.grade == 'C GRADE' %}selected{% endif %}>C GRADE</option>
+                            <option value="PASS" {% if student.grade == 'PASS' %}selected{% endif %}>PASS</option>
+                        </select>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary">
+                        💾 Update Student
+                    </button>
+                    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">
+                        ← Cancel & Back to Dashboard
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

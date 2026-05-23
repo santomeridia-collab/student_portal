@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oxford Student Portal</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        h1 {
+            color: #1e3c72;
+            margin-bottom: 0.5rem;
+        }
+        .sub {
+            color: #555;
+            margin-bottom: 2rem;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            margin-bottom: 1.5rem;
+        }
+        button {
+            background: #1e3c72;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #0f2b4f;
+        }
+        .footer {
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Oxford School of Fashion Designing</h1>
+        <div class="sub">Student Result / Details Portal</div>
+        <form action="/search" method="post">
+            <input type="text" name="register_number" placeholder="Enter Register Number (e.g., OXW/97/IV/1115)" required autocomplete="off">
+            <button type="submit">Check Details</button>
+        </form>
+        <div class="footer">
+            Enter your register number as printed on your certificate.
+        </div>
+    </div>
+</body>
+</html>
